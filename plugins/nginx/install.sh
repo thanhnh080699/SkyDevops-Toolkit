@@ -63,8 +63,7 @@ install_nginx() {
     ui_init  # re-init UI dynamically in case terminal was resized
     
     ui_border_top
-    center_text "${BOLD}XÁC NHẬN CÀI ĐẶT NGINX${RESET}"
-    echo -ne "\n"
+    ui_title "${BOLD}XÁC NHẬN CÀI ĐẶT NGINX${RESET}"
     ui_border_mid
     ui_line "Tổng quan thông tin:"
     ui_line "- Hệ điều hành: $OS_NAME $OS_VER ($OS_ID)"
@@ -99,7 +98,12 @@ install_nginx() {
     
     # Actually run the script
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        $SUDO bash plugins/nginx/scripts/install_nginx.sh $install_args
+        if ! $SUDO bash plugins/nginx/scripts/install_nginx.sh $install_args; then
+            echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt Nginx thất bại.${RESET}"
+            echo -n "  Nhấn Enter để quay lại... "
+            read
+            return 1
+        fi
     else
         # Simulation for non-linux environments (like Mac dev)
         simulate_progress "Đang cấu hình Repository ($OS_ID)"
@@ -121,8 +125,7 @@ nginx_menu() {
         ui_init # Responsive layout
         
         ui_border_top
-        center_text "${BOLD}CÀI ĐẶT NGINX OFFICIAL${RESET}"
-        echo -ne "\n"
+        ui_title "${BOLD}CÀI ĐẶT NGINX OFFICIAL${RESET}"
         ui_border_mid
         ui_line "Lựa chọn phiên bản hệ thống (Tự động kéo từ nginx.org):"
         ui_empty

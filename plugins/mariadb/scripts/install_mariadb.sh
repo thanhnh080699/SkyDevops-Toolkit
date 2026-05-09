@@ -110,6 +110,14 @@ if command -v systemctl >/dev/null 2>&1; then
     
     # Final restart
     systemctl restart mariadb || true
+    
+    # Verification check
+    if systemctl is-active --quiet mariadb || systemctl is-active --quiet mysql; then
+        echo "✔ MariaDB service is active and running."
+    else
+        echo "✘ ERROR: MariaDB service failed to start. Please check logs: journalctl -u mariadb"
+        exit 1
+    fi
 else
     echo "WARNING: 'systemctl' not found. Please start MariaDB manually."
 fi

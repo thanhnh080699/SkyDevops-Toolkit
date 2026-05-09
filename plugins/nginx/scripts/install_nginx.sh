@@ -173,6 +173,14 @@ esac
 if command -v systemctl >/dev/null 2>&1; then
     systemctl enable nginx || true
     systemctl start nginx || true
+    
+    # Verification check
+    if systemctl is-active --quiet nginx; then
+        echo "✔ Nginx service is active and running."
+    else
+        echo "✘ ERROR: Nginx service failed to start. Please check logs: journalctl -u nginx"
+        exit 1
+    fi
 else
     echo "WARNING: 'systemctl' not found. Skipping service initialization."
     echo "You can start Nginx manually using: nginx"

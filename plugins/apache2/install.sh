@@ -35,8 +35,7 @@ install_apache() {
     ui_init  # re-init UI dynamically in case terminal was resized
     
     ui_border_top
-    center_text "${BOLD}XÁC NHẬN CÀI ĐẶT APACHE2${RESET}"
-    echo -ne "\n"
+    ui_title "${BOLD}XÁC NHẬN CÀI ĐẶT APACHE2${RESET}"
     ui_border_mid
     ui_line "Tổng quan thông tin:"
     ui_line "- Hệ điều hành: $OS_NAME $OS_VER ($OS_ID)"
@@ -91,8 +90,7 @@ apache2_menu() {
         ui_init # Responsive layout
         
         ui_border_top
-        center_text "${BOLD}CÀI ĐẶT APACHE2${RESET}"
-        echo -ne "\n"
+        ui_title "${BOLD}CÀI ĐẶT APACHE2${RESET}"
         ui_border_mid
         ui_line "Quản lý cài đặt & Cập nhật Apache2 Server:"
         ui_empty

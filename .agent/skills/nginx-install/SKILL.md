@@ -1,6 +1,6 @@
 ---
 name: nginx-install
-description: Automate the installation of Nginx on Ubuntu and CentOS using official repositories. Supports selecting between Stable (LTS) and Mainline (Latest) versions. Use this skill when the user wants to install Nginx, upgrade Nginx, or manage Nginx installation on Linux servers.
+description: Automate the installation of Nginx, PHP (v7.2 - v8.3), and Node.js/NPM (v20 LTS) on Ubuntu and CentOS using official repositories. Supports selecting between Stable (LTS) and Mainline (Latest) versions for Nginx. Use this skill when the user wants to install Nginx, PHP, Node.js, upgrade services, or manage Linux server software.
 ---
 
 # Nginx Install Skill (Modular Plugin)
@@ -16,6 +16,8 @@ The project is organized into a core framework and a plugin system:
 ## Features
 - **Nested Menus**: Supports multiple levels of navigation (e.g., Service -> Action -> Version).
 - **Auto OS Detect**: Automatically detects if the system is Ubuntu/Debian or CentOS/RHEL/Rockylinux.
+- **PHP Multi-Version**: Supports installing PHP 7.2, 7.4, 8.0, 8.1, 8.2, 8.3 with common extensions.
+- **Node.js/NPM**: Automated setup of Node.js v20 (LTS) with PM2, Yarn, PNPM and other ecosystem tools.
 - **Progressive UI**: Uses progress bars and spinners for a modern CLI experience.
 - **Plugin System**: Easily add new software by creating a new folder in `plugins/` and sourcing it in `main.sh`.
 
@@ -50,3 +52,13 @@ When creating installation plugins for any new software, strictly adhere to the 
 5. **Real/Simulated Progress**: If an upgrade/downgrade is detected, explicitly simulate or run the uninstallation step before configuring the new repository and installing the new version.
 6. **Robust Dependency Check**: Every installation script must include a `pre_install_checks` function to install required tools like `curl` before using them.
 7. **Execution logic**: Always use the global `$SUDO` variable (defined in `main.sh`) instead of hardcoding `sudo`.
+
+## UI Review & Alignment Workflow (Mandatory)
+After adding any new software or modifying menu entries in `main.sh`:
+1. **Responsive Width First**: Do not hardcode the UI to 100 columns. `core/ui.sh` must read the current terminal width with `tput cols`, use it as `WIDTH`, and derive `INNER_WIDTH` and column widths dynamically. Keep only a minimum supported width guard.
+2. **Dynamic Column Allocation**: The main menu should use `ui_row_3col` with calculated `COL1_WIDTH`, `COL2_WIDTH`, and `COL3_WIDTH`. The first column must receive enough space for service labels plus installed-version markers; wider terminals should expand all columns naturally.
+3. **Vertical Alignment**: All status brackets `[...]` must be perfectly aligned vertically. Use manual space padding for labels to ensure consistency (e.g., padding "PHP" with spaces to match "NODEJS/NPM").
+4. **Case Consistency**: Service names in the main menu should be in `UPPERCASE` (e.g., NGINX, DOCKER, NODEJS/NPM).
+5. **Status Indicators**: Use `${GREEN}✔ vX.Y.Z${RESET}` for installed software and keep the brackets `[ ]` consistent across all rows.
+6. **Responsive Integrity**: Ensure no line exceeds the current `INNER_WIDTH`. Use `ui_line`, `ui_title`, and `ui_row_3col` instead of manual `center_text` or raw border printing.
+7. **Visual Balance**: Maintain a balanced distribution of items across the 3-column layout in the main menu at narrow, standard, and wide terminal widths.

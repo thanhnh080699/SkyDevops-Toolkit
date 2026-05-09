@@ -55,8 +55,7 @@ install_docker() {
     ui_init
     
     ui_border_top
-    center_text "${BOLD}XÁC NHẬN CÀI ĐẶT DOCKER & COMPOSE${RESET}"
-    echo -ne "\n"
+    ui_title "${BOLD}XÁC NHẬN CÀI ĐẶT DOCKER & COMPOSE${RESET}"
     ui_border_mid
     ui_line "Tổng quan thông tin:"
     ui_line "- Hệ điều hành: $OS_NAME $OS_VER ($OS_ID)"
@@ -91,7 +90,12 @@ install_docker() {
     
     # Actually run the script
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        $SUDO bash plugins/docker/scripts/install_docker.sh $install_args
+        if ! $SUDO bash plugins/docker/scripts/install_docker.sh $install_args; then
+            echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt Docker thất bại.${RESET}"
+            echo -n "  Nhấn Enter để quay lại... "
+            read
+            return 1
+        fi
     else
         # Simulation for non-linux environments
         simulate_progress "Đang cấu hình Docker Repository ($OS_ID)"
@@ -113,8 +117,7 @@ docker_menu() {
         ui_init
         
         ui_border_top
-        center_text "${BOLD}CÀI ĐẶT DOCKER OFFICIAL${RESET}"
-        echo -ne "\n"
+        ui_title "${BOLD}CÀI ĐẶT DOCKER OFFICIAL${RESET}"
         ui_border_mid
         ui_line "Lựa chọn phiên bản Docker CE và Docker Compose Plugin:"
         ui_empty

@@ -10,7 +10,10 @@
 . plugins/nginx/install.sh
 . plugins/apache2/install.sh
 . plugins/mariadb/install.sh
+. plugins/mysql/install.sh
 . plugins/docker/install.sh
+. plugins/php/install.sh
+. plugins/nodejs/install.sh
 
 # Global SUDO handling
 SUDO=""
@@ -43,19 +46,25 @@ show_main_menu() {
     M1=$(get_status nginx)
     M2=$(get_status apache2)
     M3=$(get_status mariadb)
-    M4=$(get_status docker)
+    M4=$(get_status mysql)
+    M5=$(get_status docker)
+    M6=$(get_status php)
+    M7=$(get_status node)
 
     ui_border_top
-    echo -ne "${CYAN}║${RESET}" ; center_text "${BOLD}🚀 SKYDEVOPS TOOLKIT v1.0.0${RESET}" ; echo -e "${CYAN}║${RESET}"
+    ui_title "${BOLD}SKYDEVOPS TOOLKIT v1.0.0${RESET}"
     ui_border_mid
     ui_line "${YELLOW}Giới thiệu:${RESET} Công cụ cài đặt & quản trị (Multi-OS: Ubuntu/CentOS)"
     ui_line "Hệ quản trị DevOps & SysAdmin chuyên nghiệp"
     ui_empty
     ui_row_3col "${BOLD}CÀI ĐẶT${RESET}" "${BOLD}TỐI ƯU${RESET}" "${BOLD}KIỂM TRA${RESET}"
-    ui_row_3col "1. NGINX   [$M1]" "5. Tối ưu Nginx" "9. Check Log Nginx"
-    ui_row_3col "2. APACHE2 [$M2]" "6. Tối ưu MariaDB" "10. Check MariaDB"
-    ui_row_3col "3. MARIADB [$M3]" "7. Tối ưu System" "11. System Status"
-    ui_row_3col "4. DOCKER  [$M4]" "8. Tối ưu Network" "12. Port Listening"
+    ui_row_3col "1. NGINX          [$M1]" "8. Tối ưu Nginx" "12. Check Log Nginx"
+    ui_row_3col "2. APACHE2        [$M2]" "9. Tối ưu MariaDB" "13. Check MariaDB"
+    ui_row_3col "3. MARIADB        [$M3]" "10. Tối ưu System" "14. System Status"
+    ui_row_3col "4. MYSQL          [$M4]" "11. Tối ưu Network" "15. Port Listening"
+    ui_row_3col "5. DOCKER         [$M5]" "" ""
+    ui_row_3col "6. PHP            [$M6]" "" ""
+    ui_row_3col "7. NODEJS/NPM     [$M7]" "" ""
     ui_empty
     ui_line "[0] Thoát"
     ui_border_mid
@@ -70,8 +79,11 @@ handle_choice() {
         1) nginx_menu ;;
         2) apache2_menu ;;
         3) mariadb_menu ;;
-        4) docker_menu ;;
-        5|6|7|8|9|10|11|12)
+        4) mysql_menu ;;
+        5) docker_menu ;;
+        6) php_menu ;;
+        7) nodejs_menu ;;
+        8|9|10|11|12|13|14|15)
             echo -e "${YELLOW}Tính năng này sẽ sớm được hoàn thiện...${RESET}"
             sleep 1
             ;;

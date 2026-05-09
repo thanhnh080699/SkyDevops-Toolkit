@@ -130,6 +130,14 @@ esac
 if command -v systemctl >/dev/null 2>&1; then
     systemctl enable docker || true
     systemctl start docker || true
+    
+    # Verification check
+    if systemctl is-active --quiet docker; then
+        echo "✔ Docker service is active and running."
+    else
+        echo "✘ ERROR: Docker service failed to start. Please check logs: journalctl -u docker"
+        exit 1
+    fi
 else
     echo "WARNING: 'systemctl' not found. Please start Docker manually."
 fi
