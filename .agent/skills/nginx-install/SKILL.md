@@ -1,6 +1,6 @@
 ---
 name: nginx-install
-description: Automate the installation of Nginx, PHP (v7.2 - v8.3), and Node.js/NPM (v20 LTS) on Ubuntu and CentOS using official repositories. Supports selecting between Stable (LTS) and Mainline (Latest) versions for Nginx. Use this skill when the user wants to install Nginx, PHP, Node.js, upgrade services, or manage Linux server software.
+description: Automate the installation of Nginx, PHP (v7.2 - v8.3), and Node.js (via NVM) on Ubuntu and CentOS using official repositories. Supports selecting between Stable (LTS) and Mainline (Latest) versions for Nginx. Use this skill when the user wants to install Nginx, PHP, Node.js, upgrade services, or manage Linux server software.
 ---
 
 # Nginx Install Skill (Modular Plugin)
@@ -17,7 +17,7 @@ The project is organized into a core framework and a plugin system:
 - **Nested Menus**: Supports multiple levels of navigation (e.g., Service -> Action -> Version).
 - **Auto OS Detect**: Automatically detects if the system is Ubuntu/Debian or CentOS/RHEL/Rockylinux.
 - **PHP Multi-Version**: Supports installing PHP 7.2, 7.4, 8.0, 8.1, 8.2, 8.3 with common extensions.
-- **Node.js/NPM**: Automated setup of Node.js v20 (LTS) with PM2, Yarn, PNPM and other ecosystem tools.
+- **Node.js/NPM**: Automated setup of Node.js via NVM (supports v16, v18, v20, v22 LTS) with PM2, Yarn, PNPM and other ecosystem tools.
 - **Progressive UI**: Uses progress bars and spinners for a modern CLI experience.
 - **Plugin System**: Easily add new software by creating a new folder in `plugins/` and sourcing it in `main.sh`.
 

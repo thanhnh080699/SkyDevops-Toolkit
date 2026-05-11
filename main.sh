@@ -8,6 +8,7 @@
 . core/os.sh
 . core/utils.sh
 . plugins/nginx/install.sh
+. plugins/nginx/optimize.sh
 . plugins/apache2/install.sh
 . plugins/mariadb/install.sh
 . plugins/mysql/install.sh
@@ -83,7 +84,8 @@ handle_choice() {
         5) docker_menu ;;
         6) php_menu ;;
         7) nodejs_menu ;;
-        8|9|10|11|12|13|14|15)
+        8) optimize_nginx ;;
+        9|10|11|12|13|14|15)
             echo -e "${YELLOW}Tính năng này sẽ sớm được hoàn thiện...${RESET}"
             sleep 1
             ;;
