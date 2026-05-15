@@ -11,10 +11,14 @@
 . plugins/nginx/optimize.sh
 . plugins/apache2/install.sh
 . plugins/mariadb/install.sh
+. plugins/mariadb/optimize.sh
 . plugins/mysql/install.sh
+. plugins/mysql/optimize.sh
 . plugins/docker/install.sh
 . plugins/php/install.sh
+. plugins/php/optimize.sh
 . plugins/nodejs/install.sh
+. plugins/system/check.sh
 
 # Global SUDO handling
 SUDO=""
@@ -59,13 +63,14 @@ show_main_menu() {
     ui_line "Hệ quản trị DevOps & SysAdmin chuyên nghiệp"
     ui_empty
     ui_row_3col "${BOLD}CÀI ĐẶT${RESET}" "${BOLD}TỐI ƯU${RESET}" "${BOLD}KIỂM TRA${RESET}"
-    ui_row_3col "1. NGINX          [$M1]" "8. Tối ưu Nginx" "12. Check Log Nginx"
-    ui_row_3col "2. APACHE2        [$M2]" "9. Tối ưu MariaDB" "13. Check MariaDB"
-    ui_row_3col "3. MARIADB        [$M3]" "10. Tối ưu System" "14. System Status"
-    ui_row_3col "4. MYSQL          [$M4]" "11. Tối ưu Network" "15. Port Listening"
-    ui_row_3col "5. DOCKER         [$M5]" "" ""
-    ui_row_3col "6. PHP            [$M6]" "" ""
-    ui_row_3col "7. NODEJS/NPM     [$M7]" "" ""
+    ui_row_3col "1. NGINX          [$M1]" "8. Tối ưu Nginx" "12. Tổng quan"
+    ui_row_3col "2. APACHE2        [$M2]" "9. Tối ưu MariaDB" "13. CPU/RAM/Process"
+    ui_row_3col "3. MARIADB        [$M3]" "10. Tối ưu PHP" "14. Disk & Inode"
+    ui_row_3col "4. MYSQL          [$M4]" "11. Tối ưu MySQL" "15. Network & Ports"
+    ui_row_3col "5. DOCKER         [$M5]" "" "16. Services"
+    ui_row_3col "6. PHP            [$M6]" "" "17. Firewall"
+    ui_row_3col "7. NODEJS/NPM     [$M7]" "" "18. Updates/Sec"
+    ui_row_3col "" "" "19. Runtime Stack"
     ui_empty
     ui_line "[0] Thoát"
     ui_border_mid
@@ -85,10 +90,17 @@ handle_choice() {
         6) php_menu ;;
         7) nodejs_menu ;;
         8) optimize_nginx ;;
-        9|10|11|12|13|14|15)
-            echo -e "${YELLOW}Tính năng này sẽ sớm được hoàn thiện...${RESET}"
-            sleep 1
-            ;;
+        9) optimize_mariadb ;;
+        10) optimize_php ;;
+        11) optimize_mysql ;;
+        12) check_system_overview ;;
+        13) check_resources ;;
+        14) check_disk ;;
+        15) check_network_ports ;;
+        16) check_services ;;
+        17) check_firewall ;;
+        18) check_security_updates ;;
+        19) check_runtime_stack ;;
         0)
             echo -e "${CYAN}Cảm ơn bạn đã sử dụng. Hẹn gặp lại!${RESET}"
             exit 0

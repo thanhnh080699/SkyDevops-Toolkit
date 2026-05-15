@@ -97,27 +97,27 @@ optimize_nginx() {
     ui_line "Vui lòng kiểm tra và thay đổi các thông số bên dưới:"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}1. worker_processes (Hiện tại: ${YELLOW}$cur_wp${RESET}, Gợi ý: ${GREEN}$sug_worker_processes${RESET}): "
+    ui_opt_param_prompt "1" "worker_processes" "$cur_wp" "$sug_worker_processes"
     read -r user_worker_processes
     : ${user_worker_processes:=$sug_worker_processes}
 
-    echo -ne "${BOLD}2. worker_connections (Hiện tại: ${YELLOW}$cur_wc${RESET}, Gợi ý: ${GREEN}$sug_worker_connections${RESET}): "
+    ui_opt_param_prompt "2" "worker_connections" "$cur_wc" "$sug_worker_connections"
     read -r user_worker_connections
     : ${user_worker_connections:=$sug_worker_connections}
 
-    echo -ne "${BOLD}3. keepalive_timeout (Hiện tại: ${YELLOW}$cur_ka${RESET}, Gợi ý: ${GREEN}$sug_keepalive${RESET}): "
+    ui_opt_param_prompt "3" "keepalive_timeout" "$cur_ka" "$sug_keepalive"
     read -r user_keepalive
     : ${user_keepalive:=$sug_keepalive}
 
-    echo -ne "${BOLD}4. gzip (Hiện tại: ${YELLOW}$cur_gz${RESET}, Gợi ý: ${GREEN}$sug_gzip${RESET}): "
+    ui_opt_param_prompt "4" "gzip" "$cur_gz" "$sug_gzip"
     read -r user_gzip
     : ${user_gzip:=$sug_gzip}
 
-    echo -ne "${BOLD}5. client_max_body_size (Hiện tại: ${YELLOW}$cur_mb${RESET}, Gợi ý: ${GREEN}$sug_client_max_body${RESET}): "
+    ui_opt_param_prompt "5" "client_max_body_size" "$cur_mb" "$sug_client_max_body"
     read -r user_client_max_body
     : ${user_client_max_body:=$sug_client_max_body}
 
-    echo -ne "${BOLD}6. use epoll (Hiện tại: ${YELLOW}$cur_ep${RESET}, Gợi ý: ${GREEN}$sug_epoll${RESET}): "
+    ui_opt_param_prompt "6" "use epoll" "$cur_ep" "$sug_epoll"
     read -r user_epoll
     : ${user_epoll:=$sug_epoll}
 

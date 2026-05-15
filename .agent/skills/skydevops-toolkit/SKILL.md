@@ -12,6 +12,7 @@ This skill defines the conventions, architecture, coding standards, and optimiza
 SkyDevOps Toolkit is a CLI-based DevOps automation tool that provides:
 - **Automated installation** of server software from official repositories
 - **Performance optimization** with hardware-aware configurations
+- **System check tools** for common operational diagnostics
 - **Multi-OS support** for Ubuntu/Debian and CentOS/RHEL/Rocky/AlmaLinux
 - **Responsive CLI UI** with progress bars, spinners, and Unicode box-drawing
 
@@ -19,9 +20,9 @@ SkyDevOps Toolkit is a CLI-based DevOps automation tool that provides:
 | Software | Plugin Path | Features |
 |----------|-------------|----------|
 | Nginx | `plugins/nginx/` | Install (Stable/Mainline), Optimize |
-| PHP | `plugins/php/` | Multi-version (7.2–8.3), Composer |
-| MySQL | `plugins/mysql/` | 8.0, 8.4 LTS with GPG auto-fix |
-| MariaDB | `plugins/mariadb/` | Dynamic API-fetched versions |
+| PHP | `plugins/php/` | Multi-version (7.2–8.3), Composer, Optimize |
+| MySQL | `plugins/mysql/` | 8.0, 8.4 LTS with GPG auto-fix, Optimize |
+| MariaDB | `plugins/mariadb/` | Dynamic API-fetched versions, Optimize |
 | Docker | `plugins/docker/` | CE + Compose + Buildx |
 | Apache2 | `plugins/apache2/` | Install/Update |
 | Node.js | `plugins/nodejs/` | NVM-based, PM2, Yarn, PNPM |
@@ -442,7 +443,8 @@ $SUDO cp "$config_file" "$backup_file"
 ```
 
 ### Rule 4: Config Validation Before Reload
-- Always test config syntax after modification: `nginx -t`, `apachectl configtest`, `mysqld --validate-config`
+- Always test config syntax after modification when the software provides a reliable validation command: `nginx -t`, `apachectl configtest`
+- Do not use `mariadbd --validate-config` or `mysqld --validate-config` in DB optimizers because support differs by version/distribution; apply config by restarting the service, show service logs on failure, then rollback
 - Auto-rollback from backup if validation fails
 - Only reload (not restart) after config changes: `systemctl reload <service>`
 
@@ -460,6 +462,14 @@ This empowers the user to review and customize before committing.
 - Present hardware-calculated suggestions as defaults
 - Allow the user to override each parameter
 - Use the Bash default-value pattern: `: ${var:=$default}`
+
+### Rule 7: Keep Execution Logs Visible
+After the user confirms an optimization or system-changing action:
+- Do not call `clear` until the action fully finishes and the user has acknowledged the result
+- Print each execution phase and command result so errors are visible: backup, write config, validate, reload/restart
+- Do not suppress validation output unless it is duplicated elsewhere; users must see why validation failed
+- On failure, print a clear red error, show relevant service/config logs when available, rollback if possible, then wait for a keypress before returning to the main menu
+- On success, print a clear green success message and wait for a keypress before returning to the main menu
 
 ---
 
