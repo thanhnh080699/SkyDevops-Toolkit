@@ -44,6 +44,8 @@ SkyDevOps Toolkit is a CLI-based DevOps automation tool that provides:
 │       ├── optimize.sh      # Performance tuning UI (optional)
 │       └── scripts/
 │           └── install_<sw>.sh  # Actual installer (run via $SUDO bash)
+│   └── system/
+│       └── check.sh         # System diagnostic/check tools
 └── .agent/skills/           # Agent skills directory
 ```
 
@@ -391,14 +393,30 @@ disk_type=$(cat /sys/block/sda/queue/rotational 2>/dev/null)
 | Parameter | Formula / Guideline | Notes |
 |-----------|-------------------|-------|
 | `innodb_buffer_pool_size` | ~70% of RAM | Most critical parameter |
-| `innodb_log_file_size` | 256M–1G | Larger = better write perf |
+| `innodb_log_file_size` | 256M–1G | MariaDB / older MySQL redo log |
+| `innodb_redo_log_capacity` | 512M–2G | MySQL 8.0.30+ redo log |
 | `innodb_flush_log_at_trx_commit` | 2 (perf) or 1 (safety) | Trade durability for speed |
+| `innodb_buffer_pool_instances` | 1–8 | MariaDB/older configs only; avoid on MySQL 8 |
+| `innodb_flush_method` | `O_DIRECT` | Reduce OS double caching |
+| `innodb_io_capacity` | HDD 200 / SSD 1000 | Disk-aware background I/O |
+| `innodb_io_capacity_max` | 2× io_capacity | Burst flushing |
+| `innodb_read_io_threads` | vCPU/2 clamped 4–16 | Read I/O concurrency |
+| `innodb_write_io_threads` | vCPU/2 clamped 4–16 | Write I/O concurrency |
+| `innodb_log_buffer_size` | 64M–128M | Large write transactions |
 | `max_connections` | RAM_MB / 10 | Prevent OOM |
 | `query_cache_size` | 0 (MySQL 8+) or 64M | Deprecated in MySQL 8 |
 | `tmp_table_size` | 64M–256M | For complex queries |
 | `max_heap_table_size` | Same as tmp_table_size | Must match |
 | `thread_cache_size` | 8–64 | Reduce thread creation |
 | `key_buffer_size` | 32M (MyISAM) | Low if InnoDB only |
+| `table_open_cache` | max_connections × 4 | Clamp 400–4000 |
+| `table_definition_cache` | 800–2000 | More tables need more cache |
+| `open_files_limit` | 65535 | Enough descriptors for tables/connections |
+| `wait_timeout` | 60 | Cleanup idle app connections |
+| `interactive_timeout` | 60 | Match wait_timeout |
+| `connect_timeout` | 10 | Avoid long failed handshakes |
+| `slow_query_log` | 1 | Enable query investigation |
+| `long_query_time` | 2 | Balanced slow query threshold |
 
 #### PHP-FPM Optimization
 | Parameter | Formula / Guideline | Notes |
@@ -470,6 +488,48 @@ After the user confirms an optimization or system-changing action:
 - Do not suppress validation output unless it is duplicated elsewhere; users must see why validation failed
 - On failure, print a clear red error, show relevant service/config logs when available, rollback if possible, then wait for a keypress before returning to the main menu
 - On success, print a clear green success message and wait for a keypress before returning to the main menu
+
+### Rule 8: Optimizer Parameter Explanation UI
+- Use `ui_opt_param_prompt` for interactive optimization parameters
+- Each prompt must show parameter name, a plain-language explanation, current value, suggested value, and the default-on-Enter behavior
+- Keep explanations short enough for terminal usage and useful for non-expert clients
+- Add new parameter explanations to `ui_opt_param_description` in `core/ui.sh`
+
+### Rule 9: DB Optimizer Include Files
+- Use app-specific include names, not generic project names:
+  - MariaDB: `99-optimize_mariadb.cnf`
+  - MySQL: `99-optimize_mysql.cnf`
+- Prefer standard include directories:
+  - MariaDB Ubuntu/Debian: `/etc/mysql/mariadb.conf.d/`
+  - MySQL Ubuntu/Debian: `/etc/mysql/mysql.conf.d/` or `/etc/mysql/conf.d/`
+  - RHEL/CentOS/Rocky/Alma: `/etc/my.cnf.d/`
+- Backup the include file if it already exists, then rollback on failed service restart
+
+---
+
+## System Check Tools
+
+System diagnostics live in `plugins/system/check.sh` and are sourced by `main.sh`.
+
+The **KIỂM TRA** menu should contain at most 8 tools and should prioritize common operational checks over service-specific log viewers:
+
+| Menu | Function | Purpose |
+|------|----------|---------|
+| `12. Tổng quan` | `check_system_overview` | OS, kernel, hostname, uptime, CPU/RAM |
+| `13. CPU/RAM/Process` | `check_resources` | Memory/swap and top CPU/RAM processes |
+| `14. Disk & Inode` | `check_disk` | Filesystem usage, inode usage, block devices, large root dirs |
+| `15. Network & Ports` | `check_network_ports` | IP, route, DNS, listening ports |
+| `16. Services` | `check_services` | Important service status and failed units |
+| `17. Firewall` | `check_firewall` | UFW/firewalld/iptables summary |
+| `18. Updates/Sec` | `check_security_updates` | Upgrade/security update visibility |
+| `19. Runtime Stack` | `check_runtime_stack` | Web/DB/PHP/Node/Docker versions and containers |
+
+Check tools should:
+- Print logs/results directly and avoid hiding command output
+- Never mutate system state except read-only commands; package update checks must not install updates
+- Use `$SUDO` for read commands that may require privileges, but do not hardcode `sudo`
+- End with a keypress pause so users can read results before returning to the menu
+- Use Linux-first commands with reasonable fallbacks for local/dev environments when practical
 
 ---
 
