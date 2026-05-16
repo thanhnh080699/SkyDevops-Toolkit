@@ -188,7 +188,7 @@ install_mysql() {
 
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
 
     read -r confirm
 
@@ -197,7 +197,7 @@ install_mysql() {
     fi
 
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n${YELLOW}  Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n${YELLOW}  $(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -214,7 +214,7 @@ install_mysql() {
         # ==============================
         if ! fix_mysql_gpg; then
             echo -e "\n${RED}  ✘ Lỗi xử lý MySQL GPG Key${RESET}"
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
             return 1
         fi
@@ -226,7 +226,7 @@ install_mysql() {
 
             echo -e "\n${RED}  ✘ Quá trình cài đặt MySQL thất bại.${RESET}"
 
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
 
             return 1
@@ -245,7 +245,7 @@ install_mysql() {
     # ==============================
     echo -e "\n${GREEN}  ✔ MySQL $version đã được cài đặt thành công!${RESET}"
 
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -297,7 +297,7 @@ mysql_menu() {
                 ;;
 
             *)
-                echo -e "${RED} Sai lựa chọn ${RESET}"
+                echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"
                 sleep 1
                 ;;
 

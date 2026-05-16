@@ -128,7 +128,7 @@ optimize_php() {
         ui_line "${RED}✘ Lỗi: Không tìm thấy PHP-FPM đã cài đặt.${RESET}"
         ui_line "Vui lòng cài đặt PHP-FPM trước khi thực hiện tối ưu."
         ui_border_bottom
-        echo -n "  Nhấn Enter để quay lại... "
+        echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
         read
         return 1
     fi
@@ -148,7 +148,7 @@ optimize_php() {
     read -r choice
     [[ "$choice" = "0" ]] && return
     if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#PHP_SCAN_VERSIONS[@]}" ]; then
-        echo -e "${RED} Sai lựa chọn ${RESET}"
+        echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"
         sleep 1
         return 1
     fi
@@ -291,11 +291,11 @@ optimize_php() {
     ui_line "${YELLOW}Hệ thống sẽ backup php.ini và pool config trước khi ghi.${RESET}"
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Tiến hành áp dụng và reload PHP-FPM? (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Tiến hành áp dụng và reload") PHP-FPM? (Y/n):${RESET} "
     read -r confirm
     [[ -z "$confirm" ]] && confirm="y"
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác.")${RESET}"
         sleep 1
         return
     fi
@@ -341,6 +341,6 @@ optimize_php() {
     fi
 
     echo -e "\n  ${GREEN}✔ Hoàn tất quy trình tối ưu PHP-FPM!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }

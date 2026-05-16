@@ -10,14 +10,14 @@
 
 pause_check_menu() {
     echo
-    echo -n "  Bấm phím bất kỳ để quay lại menu chính... "
+    echo -n "  $(tr_ui "Bấm phím bất kỳ để quay lại menu chính")... "
     read -n 1 -s -r
     echo
 }
 
 section_title() {
     echo
-    echo -e "${CYAN}${BOLD}==> $1${RESET}"
+    echo -e "${CYAN}${BOLD}==> $(tr_ui "$1")${RESET}"
 }
 
 run_check_cmd() {
@@ -27,7 +27,7 @@ run_check_cmd() {
     if "$@"; then
         return 0
     fi
-    echo -e "${YELLOW}Không thể lấy thông tin: $title${RESET}"
+    echo -e "${YELLOW}$(tr_ui "Không thể") $(tr_ui "lấy thông tin"): $(tr_ui "$title")${RESET}"
 }
 
 check_system_overview() {

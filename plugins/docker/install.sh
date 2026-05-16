@@ -66,7 +66,7 @@ install_docker() {
     ui_line "Bạn có muốn tiếp tục chạy tiến trình cài đặt?"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
     read -r confirm
     
     if [[ -z "$confirm" ]]; then
@@ -74,7 +74,7 @@ install_docker() {
     fi
     
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -92,7 +92,7 @@ install_docker() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         if ! $SUDO bash plugins/docker/scripts/install_docker.sh $install_args; then
             echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt Docker thất bại.${RESET}"
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
             return 1
         fi
@@ -104,7 +104,7 @@ install_docker() {
     fi
     
     echo -e "  ${GREEN}✔ Docker v$version & Docker Compose đã cứu cài thành công!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -146,7 +146,7 @@ docker_menu() {
             6) install_docker "${ARCHIVE_DOCKER_VERSIONS[3]}" ;;
             7) install_docker "${ARCHIVE_DOCKER_VERSIONS[4]}" ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }

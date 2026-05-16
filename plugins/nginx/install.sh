@@ -73,7 +73,7 @@ install_nginx() {
     ui_line "Bạn có muốn tiếp tục chạy tiến trình cài đặt?"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
     read -r confirm
     
     # Default to 'y' if user just presses Enter
@@ -82,7 +82,7 @@ install_nginx() {
     fi
     
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -100,7 +100,7 @@ install_nginx() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         if ! $SUDO bash plugins/nginx/scripts/install_nginx.sh $install_args; then
             echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt Nginx thất bại.${RESET}"
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
             return 1
         fi
@@ -112,7 +112,7 @@ install_nginx() {
     fi
     
     echo -e "  ${GREEN}✔ Nginx $version đã được khởi tạo & cài đặt thành công!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -154,7 +154,7 @@ nginx_menu() {
             6) install_nginx "${OTHER_VERSIONS[3]}" "Archive" ;;
             7) install_nginx "${OTHER_VERSIONS[4]}" "Archive" ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }

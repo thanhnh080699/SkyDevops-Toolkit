@@ -83,7 +83,7 @@ install_mariadb() {
     ui_line "Bạn có muốn tiếp tục chạy tiến trình cài đặt?"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
     read -r confirm
     
     if [[ -z "$confirm" ]]; then
@@ -91,7 +91,7 @@ install_mariadb() {
     fi
     
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -109,7 +109,7 @@ install_mariadb() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         if ! $SUDO bash plugins/mariadb/scripts/install_mariadb.sh $install_args; then
             echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt MariaDB thất bại.${RESET}"
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
             return 1
         fi
@@ -121,7 +121,7 @@ install_mariadb() {
     fi
     
     echo -e "  ${GREEN}✔ MariaDB $version đã được cài đặt thành công!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -165,7 +165,7 @@ mariadb_menu() {
             7) install_mariadb "${ARCHIVE_VERSIONS[3]}" ;;
             8) install_mariadb "${ARCHIVE_VERSIONS[4]}" ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }

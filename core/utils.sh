@@ -13,7 +13,7 @@ show_progress() {
     local filled=$(( percent * width / 100 ))
     local empty=$(( width - filled ))
     
-    printf "\r${BOLD}  Progress: [${GREEN}"
+    printf "\r${BOLD}  $(tr_ui "Progress"): [${GREEN}"
     printf '█%.0s' $(seq 1 $filled 2>/dev/null)
     [ $filled -eq 0 ] && printf ""
     printf "${RESET}"
@@ -49,10 +49,11 @@ run_with_spinner() {
 # Simulate progress for demo/install
 simulate_progress() {
     local msg="$1"
+    msg=$(tr_ui "$msg")
     echo -e "  ${msg}..."
     for i in {0..100..5}; do
         show_progress $i 40
         sleep 0.05
     done
-    echo -e "\n  ${GREEN}✔ Hoàn tất!${RESET}\n"
+    echo -e "\n  ${GREEN}✔ $(tr_ui "Hoàn tất")!${RESET}\n"
 }

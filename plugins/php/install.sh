@@ -46,13 +46,13 @@ install_php() {
     ui_line "(fpm, cli, mysql, gd, mbstring, xml, curl, zip, ...)"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
     read -r confirm
     
     if [[ -z "$confirm" ]]; then confirm="y"; fi
     
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -62,7 +62,7 @@ install_php() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         if ! $SUDO bash plugins/php/scripts/install_php.sh --version "$version"; then
             echo -e "\n  ${RED}✘ Lỗi: Quá trình cài đặt PHP thất bại.${RESET}"
-            echo -n "  Nhấn Enter để quay lại... "
+            echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
             read
             return 1
         fi
@@ -74,7 +74,7 @@ install_php() {
     fi
     
     echo -e "  ${GREEN}✔ PHP $version đã được cài đặt thành công!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -114,7 +114,7 @@ install_composer() {
     # Check if PHP is installed
     if ! command -v php >/dev/null 2>&1; then
         echo -e "\n  ${RED}✘ Lỗi: Bạn cần cài đặt ít nhất một phiên bản PHP trước khi cài đặt Composer.${RESET}"
-        echo -n "  Nhấn Enter để quay lại... "
+        echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
         read
         return
     fi
@@ -140,11 +140,11 @@ install_composer() {
     fi
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Xác nhận cài đặt (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận cài đặt") (Y/n):${RESET} "
     read -r confirm
     if [[ -z "$confirm" ]]; then confirm="y"; fi
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác.")${RESET}"
         sleep 1
         return
     fi
@@ -174,7 +174,7 @@ install_composer() {
 
     echo -e "\n  ${GREEN}✔ Composer đã được cài đặt/cập nhật thành công!${RESET}"
     composer -V
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -221,7 +221,7 @@ php_menu() {
             6) install_php "8.3" ;;
             7) install_composer ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }

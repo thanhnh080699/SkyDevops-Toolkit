@@ -20,13 +20,15 @@
 . plugins/nodejs/install.sh
 . plugins/system/check.sh
 
+i18n_prompt_language
+
 # Global SUDO handling
 SUDO=""
 if [ "$(id -u)" -ne 0 ]; then
     if command -v sudo >/dev/null 2>&1; then
         SUDO="sudo"
     else
-        echo -e "${RED}✘ Error: This toolkit requires root or 'sudo' privileges.${RESET}"
+        echo -e "${RED}✘ $(tr_ui "Error"): This toolkit requires root or 'sudo' privileges.${RESET}"
         exit 1
     fi
 fi
@@ -102,11 +104,15 @@ handle_choice() {
         18) check_security_updates ;;
         19) check_runtime_stack ;;
         0)
-            echo -e "${CYAN}Cảm ơn bạn đã sử dụng. Hẹn gặp lại!${RESET}"
+            if [ "$SKYDEVOPS_LANG" = "en" ]; then
+                echo -e "${CYAN}Thank you for using SkyDevOps. Goodbye!${RESET}"
+            else
+                echo -e "${CYAN}Cảm ơn bạn đã sử dụng. Hẹn gặp lại!${RESET}"
+            fi
             exit 0
             ;;
         *)
-            echo -e "${RED}Lựa chọn không hợp lệ!${RESET}"
+            echo -e "${RED}$(tr_ui "Lựa chọn không hợp lệ")!${RESET}"
             sleep 0.5
             ;;
     esac

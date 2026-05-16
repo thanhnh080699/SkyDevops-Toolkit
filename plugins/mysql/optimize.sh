@@ -94,7 +94,7 @@ optimize_mysql() {
         ui_line "${RED}✘ Lỗi: MySQL chưa được cài đặt trên hệ thống.${RESET}"
         ui_line "Vui lòng cài đặt MySQL trước khi thực hiện tối ưu."
         ui_border_bottom
-        echo -n "  Nhấn Enter để quay lại... "
+        echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
         read
         return 1
     fi
@@ -368,11 +368,11 @@ optimize_mysql() {
     ui_line "${YELLOW}MySQL cần restart để nhận các tham số InnoDB này.${RESET}"
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Tiến hành áp dụng và restart MySQL? (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Tiến hành áp dụng và restart") MySQL? (Y/n):${RESET} "
     read -r confirm
     [[ -z "$confirm" ]] && confirm="y"
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác.")${RESET}"
         sleep 1
         return
     fi

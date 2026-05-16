@@ -11,8 +11,143 @@ CYAN="${ESC}[0;36m"
 GREEN="${ESC}[0;32m"
 YELLOW="${ESC}[1;33m"
 RED="${ESC}[0;31m"
+BLUE="${ESC}[0;34m"
 
 MIN_WIDTH=80
+SKYDEVOPS_LANG="${SKYDEVOPS_LANG:-vi}"
+
+i18n_set_language() {
+    case "$1" in
+        en|EN|english|English) SKYDEVOPS_LANG="en" ;;
+        *) SKYDEVOPS_LANG="vi" ;;
+    esac
+    export SKYDEVOPS_LANG
+}
+
+i18n_prompt_language() {
+    local choice
+    while true; do
+        clear
+        echo -e "${CYAN}${BOLD}SkyDevOps Toolkit${RESET}"
+        echo
+        echo "1. English"
+        echo "2. Tiếng Việt"
+        echo
+        echo -ne "${BOLD}Select language / Chọn ngôn ngữ [1-2]: ${RESET}"
+        read -r choice
+        case "$choice" in
+            1|en|EN) i18n_set_language en; return ;;
+            2|vi|VI|"") i18n_set_language vi; return ;;
+            *) echo -e "${RED}Invalid choice / Lựa chọn không hợp lệ.${RESET}"; sleep 1 ;;
+        esac
+    done
+}
+
+tr_ui() {
+    local text="$*"
+    [ "$SKYDEVOPS_LANG" != "en" ] && { printf "%s" "$text"; return; }
+
+    text="${text//Giới thiệu:/Introduction:}"
+    text="${text//Công cụ cài đặt & quản trị/Installation and administration toolkit}"
+    text="${text//Hệ quản trị DevOps & SysAdmin chuyên nghiệp/Professional DevOps and SysAdmin management}"
+    text="${text//CÀI ĐẶT/INSTALL}"
+    text="${text//TỐI ƯU/OPTIMIZE}"
+    text="${text//KIỂM TRA/CHECK}"
+    text="${text//XÁC NHẬN/CONFIRM}"
+    text="${text//THAY ĐỔI/CHANGES}"
+    text="${text//HÓA/}"
+    text="${text//CẤU HÌNH/CONFIGURATION}"
+    text="${text//TÀI NGUYÊN/RESOURCES}"
+    text="${text//Ổ ĐĨA/DISK}"
+    text="${text//BẢO MẬT/SECURITY}"
+    text="${text//CẬP NHẬT/UPDATES}"
+    text="${text//TỔNG QUAN HỆ THỐNG/SYSTEM OVERVIEW}"
+    text="${text//SERVICES QUAN TRỌNG/IMPORTANT SERVICES}"
+    text="${text//Tối ưu/Optimize}"
+    text="${text//Tổng quan/System overview}"
+    text="${text//Thoát/Exit}"
+    text="${text//Quay lại menu chính/Back to main menu}"
+    text="${text//Quay lại/Back}"
+    text="${text//Lựa chọn không hợp lệ/Invalid choice}"
+    text="${text//Sai lựa chọn/Invalid choice}"
+    text="${text//Nhập lựa chọn/Enter choice}"
+    text="${text//Nhập giá trị mới (Enter dùng gợi ý)/Enter new value (Enter uses suggestion)}"
+    text="${text//Xác nhận cài đặt/Confirm installation}"
+    text="${text//Xác nhận/Confirm}"
+    text="${text//Tổng quan thông tin/Information summary}"
+    text="${text//Thông tin hệ thống/System information}"
+    text="${text//Hệ điều hành/Operating system}"
+    text="${text//Phiên bản/Version}"
+    text="${text//Ứng dụng/Application}"
+    text="${text//Hành động/Action}"
+    text="${text//Trạng thái/Status}"
+    text="${text//Đã cài đặt/Installed}"
+    text="${text//Chưa cài đặt/Not installed}"
+    text="${text//Đang dùng/In use}"
+    text="${text//Cài đặt mới (Chưa cài đặt)/Fresh install (not installed)}"
+    text="${text//Cài đặt mới/Fresh install}"
+    text="${text//Cài thêm bản/Install additional version}"
+    text="${text//Cập nhật lên bản mới nhất/Update to latest version}"
+    text="${text//Gỡ bản cũ/Remove old version}"
+    text="${text//Đang chạy/Running}"
+    text="${text//Hiện tại/Current}"
+    text="${text//Mới/New}"
+    text="${text//Gợi ý/Suggested}"
+    text="${text//Tham số/Parameter}"
+    text="${text//Bạn có muốn tiếp tục chạy tiến trình cài đặt?/Do you want to continue the installation process?}"
+    text="${text//Đã hủy thao tác cài đặt./Installation canceled.}"
+    text="${text//Đã hủy thao tác./Action canceled.}"
+    text="${text//Nhấn Enter để quay lại/Press Enter to go back}"
+    text="${text//Bấm phím bất kỳ để quay lại menu chính/Press any key to return to the main menu}"
+    text="${text//Hoàn tất/Done}"
+    text="${text//Đang tải/Loading}"
+    text="${text//Đang cấu hình/Configuring}"
+    text="${text//Đang tải xuống/Downloading}"
+    text="${text//Đang thiết lập/Setting up}"
+    text="${text//Đang gỡ bỏ/Removing}"
+    text="${text//Đang tạo bản backup/Creating backup}"
+    text="${text//Đang áp dụng/Applying}"
+    text="${text//Đang kiểm tra/Checking}"
+    text="${text//Không thể/Unable to}"
+    text="${text//lấy thông tin/get information}"
+    text="${text//Lỗi/Error}"
+    text="${text//Cấu hình/Configuration}"
+    text="${text//ĐỀ XUẤT/RECOMMENDED}"
+    text="${text//CÓ THỂ CHỈNH SỬA/EDITABLE}"
+    text="${text//Hệ thống phát hiện/System detected}"
+    text="${text//Nhấn Enter để dùng giá trị gợi ý hoặc nhập giá trị khác./Press Enter to use the suggested value, or type another value.}"
+    text="${text//Vui lòng kiểm tra và thay đổi các thông số bên dưới:/Review and adjust the parameters below:}"
+    text="${text//Tiến hành áp dụng và restart/Apply and restart}"
+    text="${text//Tiến hành áp dụng và reload/Apply and reload}"
+    text="${text//Tiến hành áp dụng?/Apply changes?}"
+    text="${text//Lưu ý/Note}"
+    text="${text//Khuyên dùng/Recommended}"
+    text="${text//Mới nhất/Latest}"
+    text="${text//Bản mới nhất/Latest version}"
+    text="${text//Bản ổn định phổ biến/Popular stable version}"
+    text="${text//Bản LTS mới nhất/Latest LTS version}"
+    text="${text//Các phiên bản khác/Other versions}"
+    text="${text//Lựa chọn phiên bản/Select version}"
+    text="${text//Select version PHP để cài đặt/Select PHP version to install}"
+    text="${text//Select version hệ thống/Select system version}"
+    text="${text//để cài đặt/to install}"
+    text="${text//Tự động kéo từ/Auto-fetched from}"
+    text="${text//hệ thống/system}"
+    text="${text//New nhất/Latest}"
+    text="${text//Công cụ quản lý & Package Manager/Management tools and package managers}"
+    text="${text//Các ứng dụng phổ biến/Popular utilities}"
+    text="${text//Cài đặt nền tảng/Platform installation}"
+    text="${text//Quản lý cài đặt & Cập nhật/Install and update management}"
+    text="${text//Port đang listen/Listening ports}"
+    text="${text//Trạng thái service/Service status}"
+    text="${text//Service đang failed/Failed services}"
+    text="${text//Không tìm thấy/Not found}"
+    text="${text//chưa cài đặt/not installed}"
+    text="${text//Không phát hiện/No}"
+    text="${text//OS chưa hỗ trợ kiểm tra update tự động./This OS is not supported for automatic update checks.}"
+
+    printf "%s" "$text"
+}
 
 # Initialize UI dimensions
 ui_init() {
@@ -46,8 +181,8 @@ ui_too_small() {
     clear
     local term_w=$(tput cols 2>/dev/null || echo 80)
     echo -e "${RED}${BOLD}"
-    echo "  TERMINAL TOO SMALL ($term_w < $MIN_WIDTH)"
-    echo "  Please resize your terminal window to at least ${MIN_WIDTH} columns."
+    echo "  $(tr_ui "TERMINAL TOO SMALL") ($term_w < $MIN_WIDTH)"
+    echo "  $(tr_ui "Please resize your terminal window to at least ${MIN_WIDTH} columns.")"
     echo -e "${RESET}"
 }
 
@@ -90,8 +225,10 @@ center_text() {
 
 ui_title() {
     [ "$IS_TOO_SMALL" -eq 1 ] && return
+    local text
+    text=$(tr_ui "$1")
     printf "${CYAN}║${RESET}"
-    center_text "$1"
+    center_text "$text"
     printf "${CYAN}║${RESET}\n"
 }
 
@@ -118,7 +255,8 @@ ui_border_bottom() {
 
 ui_line() {
     [ "$IS_TOO_SMALL" -eq 1 ] && return
-    local text="$1"
+    local text
+    text=$(tr_ui "$1")
     local visible=$(strip_ansi "$text")
     local len=${#visible}
     local pad=$((INNER_WIDTH - len - 2))
@@ -140,9 +278,13 @@ ui_empty() {
 ui_row_3col() {
     [ "$IS_TOO_SMALL" -eq 1 ] && return
     
-    local c1=$(truncate_text "$1" $COL1_WIDTH)
-    local c2=$(truncate_text "$2" $COL2_WIDTH)
-    local c3=$(truncate_text "$3" $COL3_WIDTH)
+    local t1 t2 t3
+    t1=$(tr_ui "$1")
+    t2=$(tr_ui "$2")
+    t3=$(tr_ui "$3")
+    local c1=$(truncate_text "$t1" $COL1_WIDTH)
+    local c2=$(truncate_text "$t2" $COL2_WIDTH)
+    local c3=$(truncate_text "$t3" $COL3_WIDTH)
 
     local v1=$(strip_ansi "$c1")
     local v2=$(strip_ansi "$c2")
@@ -158,10 +300,63 @@ ui_row_3col() {
 }
 
 ui_input() {
-    echo -ne "\n${BOLD}➜ Nhập lựa chọn:${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Nhập lựa chọn"):${RESET} "
 }
 
 ui_opt_param_description() {
+    if [ "$SKYDEVOPS_LANG" = "en" ]; then
+        case "$1" in
+            worker_processes) echo "Number of Nginx worker processes. Usually set to the vCPU count." ;;
+            worker_connections) echo "Maximum connections per worker. Higher values help with concurrent load." ;;
+            keepalive_timeout) echo "How long HTTP connections stay open. Too high keeps resources busy; too low adds handshakes." ;;
+            gzip) echo "Compress text responses before sending them. Saves bandwidth with a small CPU cost." ;;
+            client_max_body_size) echo "Maximum upload/request body size. Set high enough for file uploads." ;;
+            "use epoll") echo "Use Linux epoll event engine. Suitable for high-load Linux servers." ;;
+            innodb_buffer_pool_size) echo "RAM used to cache InnoDB data and indexes. This is the most important DB parameter." ;;
+            innodb_log_file_size) echo "Legacy redo log size. Larger logs improve writes but may increase recovery time." ;;
+            innodb_redo_log_capacity) echo "Redo log capacity for newer MySQL versions. Helps write-heavy workloads stay stable." ;;
+            innodb_log_buffer_size) echo "Redo log buffer in RAM. Useful for large or frequent write transactions." ;;
+            innodb_flush_log_at_trx_commit) echo "How commit logs are flushed to disk. 1 is safest; 2 balances performance." ;;
+            innodb_buffer_pool_instances) echo "Splits the buffer pool to reduce lock contention on larger servers." ;;
+            innodb_flush_method) echo "How InnoDB writes data to disk. O_DIRECT often reduces double caching on Linux." ;;
+            innodb_io_capacity) echo "Expected background IOPS for InnoDB. SSD values should be higher than HDD." ;;
+            innodb_io_capacity_max) echo "Maximum IOPS InnoDB can use during burst flushing." ;;
+            innodb_read_io_threads) echo "InnoDB read I/O thread count. Increase moderately by vCPU and disk type." ;;
+            innodb_write_io_threads) echo "InnoDB write I/O thread count. Useful for write-heavy workloads." ;;
+            max_connections) echo "Maximum concurrent DB connections. Too high can exhaust RAM." ;;
+            tmp_table_size) echo "Maximum in-memory temporary table size before spilling to disk." ;;
+            max_heap_table_size) echo "MEMORY table limit. Keep it aligned with tmp_table_size." ;;
+            thread_cache_size) echo "Caches DB connection threads to reduce thread creation cost." ;;
+            key_buffer_size) echo "MyISAM index buffer. Keep low when the application mainly uses InnoDB." ;;
+            table_open_cache) echo "Number of table handles to cache. Reduces repeated table open cost." ;;
+            table_definition_cache) echo "Caches table metadata. Useful with many databases or tables." ;;
+            open_files_limit) echo "File descriptor limit for the DB process. Needs to cover tables and connections." ;;
+            query_cache_type) echo "Enables or disables MariaDB query cache. Usually off to avoid contention." ;;
+            query_cache_size) echo "Query cache size. MySQL 8 no longer supports it, so it is skipped when needed." ;;
+            wait_timeout) echo "Idle timeout for normal connections. Lower values clear stale connections faster." ;;
+            interactive_timeout) echo "Idle timeout for interactive connections. Usually close to wait_timeout." ;;
+            connect_timeout) echo "Timeout for completing DB connections. Too high holds resources during network issues." ;;
+            slow_query_log) echo "Enables slow query logging for performance investigation." ;;
+            long_query_time) echo "Slow query threshold. Lower values produce more log entries." ;;
+            log_slow_verbosity) echo "MariaDB slow log detail level, useful for query plans." ;;
+            log_queries_not_using_indexes) echo "Logs queries without indexes. Useful for debugging, but can be noisy in production." ;;
+            pm) echo "PHP-FPM process manager mode. dynamic balances performance and RAM." ;;
+            pm.max_children) echo "Maximum PHP worker count. This is the main load limit and should be sized by RAM." ;;
+            pm.start_servers) echo "Number of PHP workers started when PHP-FPM starts." ;;
+            pm.min_spare_servers) echo "Minimum idle workers kept ready for requests." ;;
+            pm.max_spare_servers) echo "Maximum idle workers before PHP-FPM trims them." ;;
+            pm.max_requests) echo "Requests handled by each worker before recycling, helping reduce memory leaks." ;;
+            memory_limit) echo "Maximum RAM for each PHP request. Too high can exhaust memory under concurrency." ;;
+            upload_max_filesize) echo "Maximum PHP file upload size." ;;
+            post_max_size) echo "Maximum POST body size. Should not be lower than upload_max_filesize." ;;
+            opcache.memory_consumption) echo "RAM used by OPcache to store PHP bytecode and reduce parse time." ;;
+            opcache.max_accelerated_files) echo "Number of PHP files OPcache can cache. Needs to fit CMS/framework file counts." ;;
+            opcache.validate_timestamps) echo "Checks PHP file changes. 1 helps frequent deploys; 0 is faster for production." ;;
+            *) echo "Performance tuning parameter. Keep the suggestion if you do not have a specific requirement." ;;
+        esac
+        return
+    fi
+
     case "$1" in
         worker_processes) echo "Số process Nginx xử lý request. Thường đặt bằng số vCPU để tận dụng CPU." ;;
         worker_connections) echo "Số kết nối tối đa mỗi worker. Giá trị cao giúp chịu tải đồng thời tốt hơn." ;;
@@ -222,8 +417,8 @@ ui_opt_param_prompt() {
     echo
     echo -e "${CYAN}┌─ ${BOLD}${idx}. ${key}${RESET}"
     echo -e "${CYAN}│${RESET} $(ui_opt_param_description "$key")"
-    echo -e "${CYAN}│${RESET} Hiện tại: ${YELLOW}${current}${RESET} | Gợi ý: ${GREEN}${suggested}${RESET}"
-    echo -ne "${CYAN}└─${RESET} ${BOLD}Nhập giá trị mới (Enter dùng gợi ý):${RESET} "
+    echo -e "${CYAN}│${RESET} $(tr_ui "Hiện tại"): ${YELLOW}${current}${RESET} | $(tr_ui "Gợi ý"): ${GREEN}${suggested}${RESET}"
+    echo -ne "${CYAN}└─${RESET} ${BOLD}$(tr_ui "Nhập giá trị mới (Enter dùng gợi ý)"):${RESET} "
 }
 
 get_status() {

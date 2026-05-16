@@ -20,7 +20,7 @@ optimize_nginx() {
         ui_line "${RED}✘ Lỗi: Nginx chưa được cài đặt trên hệ thống.${RESET}"
         ui_line "Vui lòng cài đặt Nginx trước khi thực hiện tối ưu."
         ui_border_bottom
-        echo -n "  Nhấn Enter để quay lại... "
+        echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
         read
         return 1
     fi
@@ -139,11 +139,11 @@ optimize_nginx() {
     ui_line "${YELLOW}Lưu ý: Hệ thống sẽ backup /etc/nginx/nginx.conf trước khi ghi đè.${RESET}"
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Tiến hành áp dụng? (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Tiến hành áp dụng?") (Y/n):${RESET} "
     read -r confirm
     if [[ -z "$confirm" ]]; then confirm="y"; fi
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác.")${RESET}"
         sleep 1
         return
     fi
@@ -201,6 +201,6 @@ optimize_nginx() {
     fi
 
     echo -e "\n  ${GREEN}✔ Hoàn tất quy trình tối ưu Nginx!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }

@@ -43,7 +43,7 @@ install_nvm() {
     ui_line "Kịch bản: Tải và chạy script cài đặt từ GitHub chính thức"
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Xác nhận cài đặt (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận cài đặt") (Y/n):${RESET} "
     read -r confirm
     if [[ -z "$confirm" ]]; then confirm="y"; fi
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then return; fi
@@ -71,7 +71,7 @@ install_nvm() {
     fi
 
     echo -e "  ${GREEN}✔ NVM đã được cài đặt!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -94,7 +94,7 @@ install_nodejs_nvm() {
     ui_line "Hệ thống sẽ sử dụng NVM để cài đặt Node.js $version"
     ui_border_bottom
 
-    echo -ne "\n${BOLD}➜ Xác nhận cài đặt (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận cài đặt") (Y/n):${RESET} "
     read -r confirm
     if [[ -z "$confirm" ]]; then confirm="y"; fi
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then return; fi
@@ -112,7 +112,7 @@ install_nodejs_nvm() {
 
     echo -e "  ${GREEN}✔ Node.js $version đã được cài đặt và đặt làm mặc định!${RESET}"
     node -v 2>/dev/null && npm -v 2>/dev/null
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -170,7 +170,7 @@ nodejs_version_menu() {
             local selected_ver="${versions[$((v_choice-1))]}"
             install_nodejs_nvm "$selected_ver"
         else
-            echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1
+            echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1
         fi
     done
 }
@@ -247,7 +247,7 @@ nodejs_menu() {
             6) install_npm_pkg "nodemon" "Nodemon" ;;
             7) install_npm_pkg "serve" "Serve" ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }

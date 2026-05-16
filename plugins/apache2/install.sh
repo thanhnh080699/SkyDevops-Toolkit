@@ -45,7 +45,7 @@ install_apache() {
     ui_line "Bạn có muốn tiếp tục chạy tiến trình cài đặt?"
     ui_border_bottom
     
-    echo -ne "\n${BOLD}➜ Xác nhận (Y/n):${RESET} "
+    echo -ne "\n${BOLD}➜ $(tr_ui "Xác nhận") (Y/n):${RESET} "
     read -r confirm
     
     # Default to 'y' if user just presses Enter
@@ -54,7 +54,7 @@ install_apache() {
     fi
     
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-        echo -e "\n  ${YELLOW}Đã hủy thao tác cài đặt.${RESET}"
+        echo -e "\n  ${YELLOW}$(tr_ui "Đã hủy thao tác cài đặt.")${RESET}"
         sleep 1
         return
     fi
@@ -79,7 +79,7 @@ install_apache() {
     fi
     
     echo -e "  ${GREEN}✔ Apache2 đã được khởi tạo & cài đặt thành công!${RESET}"
-    echo -n "  Nhấn Enter để quay lại... "
+    echo -n "  $(tr_ui "Nhấn Enter để quay lại")... "
     read
 }
 
@@ -105,7 +105,7 @@ apache2_menu() {
         case $a_choice in
             1) install_apache ;;
             0) return ;;
-            *) echo -e "${RED} Sai lựa chọn ${RESET}"; sleep 1 ;;
+            *) echo -e "${RED} $(tr_ui "Sai lựa chọn") ${RESET}"; sleep 1 ;;
         esac
     done
 }
